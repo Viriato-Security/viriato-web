@@ -1,0 +1,8 @@
+name = "viriato-web"
+compatibility_date = "2026-01-01"
+pages_build_output_dir = "dist"
+
+[[kv_namespaces]]
+binding = "WAITLIST"
+id = "2a5d5a2c37524c7e943c09dea2295445"
+preview_id = "d85a7614afef4f68aa54f2f859934902"
