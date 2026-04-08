@@ -68,15 +68,41 @@ export function Home() {
   const [email, setEmail] = useState('')
   const [emailError, setEmailError] = useState('')
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [apiError, setApiError] = useState('')
 
-  const handleWaitlist = (e: React.FormEvent) => {
+  const handleWaitlist = async (e: React.FormEvent) => {
     e.preventDefault()
+
     if (!validateEmail(email)) {
       setEmailError('Please enter a valid email address.')
       return
     }
+
     setEmailError('')
-    setSubmitted(true)
+    setApiError('')
+    setLoading(true)
+
+    try {
+      const res = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      })
+
+      const data = await res.json() as { success?: boolean; error?: string }
+
+      if (!res.ok || !data.success) {
+        setApiError(data.error ?? 'Something went wrong. Please try again.')
+        return
+      }
+
+      setSubmitted(true)
+    } catch {
+      setApiError('Network error. Please check your connection and try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -179,18 +205,34 @@ export function Home() {
                   onChange={(e) => {
                     setEmail(e.target.value)
                     if (emailError) setEmailError('')
+                    if (apiError) setApiError('')
                   }}
-                  aria-describedby={emailError ? 'email-error' : undefined}
+                  aria-describedby={
+                    emailError ? 'email-error' : apiError ? 'api-error' : undefined
+                  }
                   autoComplete="email"
+                  disabled={loading}
                   required
                 />
-                <Button type="submit" variant="primary" size="md" className={styles.notifyBtn}>
-                  Notify me
+                <Button
+                  type="submit"
+                  variant="primary"
+                  size="md"
+                  className={styles.notifyBtn}
+                  disabled={loading}
+                  aria-busy={loading}
+                >
+                  {loading ? 'Joining…' : 'Notify me'}
                 </Button>
               </div>
               {emailError && (
                 <p id="email-error" className={styles.errorMsg} role="alert">
                   {emailError}
+                </p>
+              )}
+              {apiError && (
+                <p id="api-error" className={styles.errorMsg} role="alert">
+                  {apiError}
                 </p>
               )}
             </form>
