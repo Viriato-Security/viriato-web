@@ -1,0 +1,24 @@
+name = "viriato-web"
+compatibility_date = "2026-01-01"
+pages_build_output_dir = "dist"
+
+# ─── KV Namespaces ────────────────────────────────────────────────────────────
+# After running `wrangler kv namespace create WAITLIST` and
+# `wrangler kv namespace create WAITLIST --preview`, replace the
+# placeholder IDs below with the real ones from the CLI output.
+
+[[kv_namespaces]]
+binding = "WAITLIST"
+id = "REPLACE_WITH_KV_NAMESPACE_ID"
+preview_id = "REPLACE_WITH_KV_PREVIEW_NAMESPACE_ID"
+
+# ─── Email (send_email binding) ───────────────────────────────────────────────
+# Requires Cloudflare Email Routing enabled on viriatosecurity.com.
+# The destination address must be verified in the Cloudflare dashboard
+# under Email > Email Routing > Destination addresses.
+#
+# Uncomment once Email Routing is configured:
+#
+# [[send_email]]
+# name = "NOTIFY_EMAIL"
+# destination_address = "contact@viriatosecurity.com"
