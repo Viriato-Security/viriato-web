@@ -1,0 +1,24 @@
+.horizontal {
+  border: none;
+  border-top: 1px solid var(--color-border);
+}
+
+.decorative {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.line {
+  flex: 1;
+  height: 1px;
+  background-color: var(--color-border-strong);
+}
+
+.diamond {
+  width: 6px;
+  height: 6px;
+  background-color: var(--color-gold);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
